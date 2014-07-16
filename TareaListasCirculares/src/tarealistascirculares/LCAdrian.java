@@ -13,12 +13,11 @@ public class LCAdrian {
 
     public static void main(String[] args) {
         ListaCircular LCircular = new ListaCircular();
-        LCircular.AgregarNodoInicio("3");
-        LCircular.AgregarNodoInicio("2");
-        LCircular.AgregarNodoInicio("1");
-        LCircular.AgregaNodoFinal("4");
+        LCircular.AgregarNodo("3", true);
+        LCircular.AgregarNodo("2", true);
+        LCircular.AgregarNodo("1", true);
+        LCircular.AgregarNodo("4", false);
         LCircular.AgregarNodoPos("12", 3);
-        LCircular.AgregarNodoPos("20", 13);
         LCircular.ImprimirListaCircular();
     }
 }
@@ -70,9 +69,9 @@ class ListaCircular {
     }
     
     /*
-     * Agrega un nodo al inicio de la lista
+     * Agrega un nodo al inicio de la lista. El parámetro 'inicio' indica si el nodo se está agregando al inicio o al final de la lista
      */
-    public void AgregarNodoInicio(String dato) {
+    public void AgregarNodo(String dato, boolean inicio) {
         NodoCircular tmp = new NodoCircular(dato);
         if (PrimerNodo == null) {
             tmp.Siguiente = tmp;
@@ -81,45 +80,16 @@ class ListaCircular {
         }
         else {
             tmp.Siguiente = PrimerNodo;
+            PrimerNodo.Anterior.Siguiente = tmp;
+            tmp.Anterior = PrimerNodo.Anterior;
             PrimerNodo.Anterior = tmp;
-            NodoCircular nodoTmp = PrimerNodo;
-            while (nodoTmp.Siguiente != PrimerNodo)
+            if(inicio)
             {
-                nodoTmp = nodoTmp.Siguiente;
+                PrimerNodo = tmp;
             }
-            nodoTmp.Siguiente = tmp;
-            tmp.Anterior = nodoTmp;
-
-            PrimerNodo = tmp;
         }
     }
 
-    /*
-    * Agrega un nodo al final de la lista circular
-    */
-    public void AgregaNodoFinal(String dato)
-    {
-        NodoCircular nuevoNodo = new NodoCircular(dato);
-        if (PrimerNodo == null)
-        {
-            nuevoNodo.Siguiente = nuevoNodo;
-            nuevoNodo.Anterior = nuevoNodo;
-            PrimerNodo = nuevoNodo;
-        }
-        else
-        {
-            NodoCircular tmp = PrimerNodo;
-            while (tmp.Siguiente != PrimerNodo)
-            {
-                tmp = tmp.Siguiente;
-            }
-            tmp.Siguiente = nuevoNodo;
-            nuevoNodo.Anterior = tmp;
-            nuevoNodo.Siguiente = PrimerNodo;
-            PrimerNodo.Anterior = nuevoNodo;
-        }
-    }
-    
     /*
     * Agrega un nodo en una posición de la lista. Los indices de la lista empiezan en 1
     */
@@ -127,7 +97,7 @@ class ListaCircular {
     {
         if(PrimerNodo == null || pos == 1)
         {
-            AgregarNodoInicio(dato);
+            AgregarNodo(dato, true);
         }
         else
         {
